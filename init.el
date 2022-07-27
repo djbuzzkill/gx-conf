@@ -42,11 +42,12 @@
 (global-set-key (kbd "M-p") 'previous-line)
 (global-set-key (kbd "M-<up>") 'scroll-down-line)
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
+(global-set-key (kbd "C-o") 'find-file-existing) 
 
 (global-unset-key (kbd "C-<backspace>"))
 
 
-;; quit putting Customize shit in this filk
+;; quit putting customize shit in this filk
 (setq custom-file (locate-user-emacs-file "custom_vars.el"))
 (load custom-file 'noerror 'nomessage)
 
