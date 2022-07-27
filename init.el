@@ -44,6 +44,9 @@
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
 (global-set-key (kbd "C-o") 'find-file-existing) 
 
+(global-set-key (kbd "C-,") 'previous-buffer) 
+(global-set-key (kbd "C-.") 'next-buffer) 
+
 (global-unset-key (kbd "C-<backspace>"))
 
 
@@ -211,6 +214,7 @@
    "bb" '(counsel-ibuffer :which-key "switch buffer")
 
    "f"  '(:ignore f :which-key "file operations")
+   "fo" '(find-file-existing :whitch-key "open an existing file")
    "fp" '(find-file-at-point :which-key "open file at point")
    "fr" '(recentf-open-files :which-key "open recent file list")
    "fm" '(recentf-open-more-files :which-key "open more recent files")
