@@ -1,7 +1,10 @@
 ;;
+;; ಠ_ಠ
 ;;
 ;;
-;;
+
+
+
 
 
 (setq inhibit-startup-message t)
@@ -12,6 +15,9 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+
+;; (tooltip-mode 1)
+
 (toggle-truncate-lines 1)
 
 (transient-mark-mode 1)
@@ -31,24 +37,6 @@
 (setq visible-bell nil)
 
 (require 'package)
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-<tab>") 'other-window)
-
-(global-set-key (kbd "M-m") 'set-mark-command)
-(global-set-key (kbd "M-j") 'forward-line)
-(global-set-key (kbd "M-k") 'previous-line)
-(global-set-key (kbd "M-n") 'forward-line)
-(global-set-key (kbd "M-p") 'previous-line)
-(global-set-key (kbd "M-<up>") 'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-(global-set-key (kbd "C-o") 'find-file-existing) 
-
-(global-set-key (kbd "C-,") 'previous-buffer) 
-(global-set-key (kbd "C-.") 'next-buffer) 
-
-(global-unset-key (kbd "C-<backspace>"))
-
 
 ;; quit putting customize shit in this filk
 (setq custom-file (locate-user-emacs-file "custom_vars.el"))
@@ -73,8 +61,28 @@
 
 (require 'use-package)
 
+;; 
+(defun gx/is-whitespace (c)
+  (or (char-equal c 9)
+      (char-equal c 10)
+      (char-equal c 11)
+      (char-equal c 12)
+      (char-equal c 13)
+      (char-equal c 32) ))
 
-	 
+;;
+(defun gx/backward-kill-whitespace ()
+  (while (gx/is-whitespace (char-before))
+    (backward-delete-char 1)))
+	      	      
+(defun gx/backward-kill-word (arg)
+  "kill backward more like windows"
+  (interactive "p")
+  (if (gx/is-whitespace (char-before))
+      (gx/backward-kill-whitespace)
+    (backward-kill-word arg)))
+
+;;	 
 (setq use-package-always-ensure t)
 
 ;;; https://github.com/Alexander-Miller/treemacs/issues/164
@@ -202,11 +210,11 @@
 ;; 
 (use-package general
   :config
-  (general-create-definer e9/leader-keys
+  (general-create-definer gx/leader-keys
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
     :global-prefix "C-SPC")
-  (e9/leader-keys
+  (gx/leader-keys
    "t"  '(:ignore t :which-key "toggles")
    "tt" '(counsel-load-theme :which-key "choose theme")
 
@@ -222,30 +230,38 @@
 
 
 ;; vi in emacs
-(use-package evil
-  :init (setq evil-want-integration t)
-        (setq evil-want-keybinding nil)
-        (setq evil-want-C-u-scroll t)
-	(setq evil-want-C-i-jump nil)
-  :config
-  (evil-mode 1)
-  (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
-  (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
-  (define-key evil-insert-state-map (kbd "C-d") 'evil-delete-char) 
+;; (use-package evil
+;;   :init (setq evil-want-integration nil)
+;;         (setq evil-want-keybinding nil)
+;;         (setq evil-want-C-u-scroll t)
+;; 	(setq evil-want-C-i-jump nil)
+;;   :config
+;;   (evil-mode 1)
+;;   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+;;   (define-key evil-insert-state-map (kbd "C-h") 'evil-delete-backward-char-and-join)
+;;   (define-key evil-insert-state-map (kbd "C-d") 'evil-delete-char) 
 
-  (evil-global-set-key 'motion "j" 'evil-next-visual-line)
-  (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
-  (evil-set-initial-state '*ielm* 'normal)
-  (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+;;   (evil-define-key '(normal visual) evil-normal-state-map (kbd "i") nil)
+;;   (evil-define-key '(normal visual) evil-normal-state-map (kbd "I") nil)
+;;   (evil-define-key '(normal visual) evil-normal-state-map (kbd "a") nil)
+;;   (evil-define-key '(normal visual) evil-normal-state-map (kbd "A") nil)
 
+  
+;;   (evil-global-set-key 'motion "j" 'evil-next-visual-line)
+;;   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
+
+;;   (evil-set-initial-state '*ielm* 'normal)
+;;   (evil-set-initial-state 'messages-buffer-mode 'normal)
+;;   (evil-set-initial-state 'dashboard-mode 'normal))
+
+;;  (evil-define-key '(mormal visual) evil-normal-state-map (kbd "<home>") 'eshell-bol)
 
 ;; 
-(use-package evil-collection
-  :after evil
-  :config (evil-collection-init))
-	  ;;
+;; (use-package evil-collection
+;;   :after evil
+;;   :config (evil-collection-init))
+;; 	  ;;
 
 ;; comment/uncomment code
 (use-package evil-nerd-commenter
@@ -258,10 +274,10 @@
   :commands (dired dired-jump)
   :bind (("C-x C-j" . dired-jump))
   :custom (dired-listing-switches "-agho --group-directories-first")
-  :config
-  (evil-collection-define-key 'normal 'dired-mode-map
-    "h" 'dired-up-directory
-    "l" 'dired-find-file))
+;; :config (evil-collection-define-key 'normal 'dired-mode-map  "h" 'dired-up-directory  "l" 'dired-find-file)
+
+
+  )
 
 
 
@@ -275,14 +291,14 @@
   ("f" nil "finished" :exit t))
 ;; wah :w
 
-(e9/leader-keys
+(gx/leader-keys
  "ts" '(hydra-text-scale/body :which-key "scale-text"))
   
 (use-package forge)
 
 
 
-(defun e9/org-mode-setup ()
+(defun gx/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
   (auto-fill-mode 0)
@@ -307,14 +323,14 @@
 
 
 
-(defun e9/lsp-mode-setup ()
+(defun gx/lsp-mode-setup ()
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
 
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :hook (lsp-mode . e9/lsp-mode-setup)
+  :hook (lsp-mode . gx/lsp-mode-setup)
 
   :init (setq lsp-keymap-prefix "C-c l")
   :config (lsp-enable-which-key-integration t))
@@ -402,8 +418,8 @@
 
 ;;
 ;; evil collection
- (use-package evil-collection
-   :after magit)
+ ;; (use-package evil-collection
+ ;; :after magit)
 
 ;;
 ;;
@@ -429,13 +445,13 @@
 
 
 
-(defun e9/configure-eshell ()
+(defun gx/configure-eshell ()
   (add-hook 'eshell-pre-command-hook 'eshell-truncate-buffer)
 
   (add-to-list 'eshell-output-filter-functions 'eshell-truncate-buffer)
 
   (evil-define-key '(normal insert visual) eshell-mode-map (kbd "C-r") 'counsel-esh-history)
-  (evil-define-key '(mormal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
+  (evil-define-key '(normal insert visual) eshell-mode-map (kbd "<home>") 'eshell-bol)
   (evil-normalize-maps)
 
   (setq eshell-history-size (* 10 1024)
@@ -447,7 +463,7 @@
 ;;
 
 (use-package eshell
-  :hook (eshell-first-time-mode . 'e9/configure-eshell)
+  :hook (eshell-first-time-mode . 'gx/configure-eshell)
   :config (eshell-git-prompt-use-theme 'robbyrussell))
 
 
@@ -477,12 +493,6 @@
   :init (global-flycheck-mode t))
 
 
-;; (use-package dirvish
-;;   :ensure t
-;;   :init
-;;   ;; Let Dirvish take over Dired globally
-;;   (dirvish-override-dired-mode))
-
 ;;
 ;(require 'slime)
 ;; (use-package slime
@@ -490,44 +500,65 @@
 ;;   :config (slime-setup '(slime-fancy)))
 (use-package sly
   :init (setq inferior-lisp-program "/usr/bin/sbcl")
-
   :config (setq lisp-mode-hook 'sly-editing-mode))  
 
- 	
-;;(require 'sly-autoloads)
-
-
-
-(eval-after-load 'sly
-  `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
+ 
+;;
+(eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
 
 ;; 
-(setq initial-frame-alist '((width . 164) (height . 48) (x-pos . 0) (y-pos . 0)))
-;;(setq iswitchb-mode 
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
+(global-set-key (kbd "C-<tab>")  'other-window)
+
+(global-set-key (kbd "M-m")      'set-mark-command)
+(global-set-key (kbd "M-<up>")   'scroll-down-line)
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
+(global-set-key (kbd "C-o")      'find-file-existing) 
+(global-set-key (kbd "C-<tab>")   'next-multiframe-window)
 
 
 
-; (global-set-key "\M-o"  'find-file)
-; (global-set-key "\M-g"  'goto-line)
-
-(global-set-key  [(control tab)] 'next-multiframe-window)
-;; other window
+(global-set-key (kbd "C-x C-r") 'recentf-open-files) 
+(global-set-key (kbd "C-x C-m") 'recentf-open-more-files) 
 
 
-;; -- cycle buffers --
-;;(define-key global-map (kbd "C-\,") 'previous-buffer)
-;;(define-key global-map (kbd "C-\.") 'next-buffer)
+(global-set-key (kbd "C-<backspace>") 'gx/backward-kill-word) 
+
+
+(global-set-key (kbd "C-j") 'forward-line)      ;; was electric-newline..'mebe indent'
+(global-set-key (kbd "C-k") 'previous-line)      ;; was kill-line
+
+;;(global-set-key (kbd "C-j") 'forward-line) ;; was electric-newline..'mebe indent'
+(global-set-key (kbd "M-k") 'kill-line)      ;; was kill-line
+
+
+
+
+;; die M-z
+
+;; fucking C-[
+
+(global-set-key (kbd "C-n")      'next-buffer)
+(global-set-key (kbd "C-p")      'previous-buffer)
+
+(global-set-key (kbd "M-n")      'forward-line)
+(global-set-key (kbd "M-p")      'previous-line)
+
+(global-set-key (kbd "C->") 'next-window-any-frame)
+(global-set-key (kbd "C-<") 'previous-window-any-frame)
+
+
+(global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
+(global-unset-key (kbd "C-z"))     ;; 'previous-line);; swap with C-k
 
 
 ;;
-(set-frame-parameter (selected-frame) 'alpha 92)
+;; (set-frame-parameter (selected-frame) 'alpha 92)
 
-;; 
-;; (find-file "c:/Quarantine/.emacs")
 (find-file  "~/hello.lisp")
 ;;(find-file  "~/hello.org")
 (find-file  "~/.emacs.d/init.el")
 (find-file  "~/.config/awesome/rc.lua")
-
 ;;
 
+ 
