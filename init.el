@@ -1,7 +1,8 @@
+;;---------------------------------------------------------------------------------------
 ;;
 ;; ಠ_ಠ
 ;;
-;;
+;;---------------------------------------------------------------------------------------
 
 
 
@@ -62,6 +63,12 @@
 (require 'use-package)
 
 ;; 
+(defun gx/set-keyrate (lat rate)
+  "set system kbd rate"
+  (interactive "nkey latency(ms): \nnkey rate(chars/sec): ")
+  (shell-command (format "xset r rate %d %d" lat rate)))
+
+;; 
 (defun gx/is-whitespace (c)
   (or (char-equal c 9)
       (char-equal c 10)
@@ -69,6 +76,22 @@
       (char-equal c 12)
       (char-equal c 13)
       (char-equal c 32) ))
+
+
+;;
+(defun gx/kill-whitespace ()
+  (while (gx/is-whitespace (char-after))
+    (delete-char 1)))
+
+
+
+(defun gx/kill-word (args)
+  "die"
+  (interactive "p")
+
+  (if (gx/is-whitespace (char-after))
+      (gx/kill-whitespace) 
+    (kill-word args)))
 
 ;;
 (defun gx/backward-kill-whitespace ()
@@ -436,7 +459,11 @@
   :commands vterm
 
   :config
-  (setq vterm-max-scrollback 10000))
+  (setq vterm-max-scrollback 10000)
+  ;; vterm specific
+  (define-key vterm-mode-map (kbd "C-M-j") 'counsel-switch-buffer)
+  (define-key vterm-mode-map (kbd "C-n")   'next-buffer)
+  (define-key vterm-mode-map (kbd "C-p")   'previous-buffer))
 
 
 
@@ -523,6 +550,8 @@
 
 
 (global-set-key (kbd "C-<backspace>") 'gx/backward-kill-word) 
+(global-set-key (kbd "M-d") 'gx/kill-word) 
+
 
 
 (global-set-key (kbd "C-j") 'forward-line)      ;; was electric-newline..'mebe indent'
@@ -547,16 +576,19 @@
 (global-set-key (kbd "C->") 'next-window-any-frame)
 (global-set-key (kbd "C-<") 'previous-window-any-frame)
 
+(global-set-key (kbd "C-{") 'beginning-of-defun)
+(global-set-key (kbd "C-}") 'end-of-defun)
+
+
 
 (global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
 (global-unset-key (kbd "C-z"))     ;; 'previous-line);; swap with C-k
 
 
 ;;
-;; (set-frame-parameter (selected-frame) 'alpha 92)
+;;(find-file  "~/hello.org")
 
 (find-file  "~/hello.lisp")
-;;(find-file  "~/hello.org")
 (find-file  "~/.emacs.d/init.el")
 (find-file  "~/.config/awesome/rc.lua")
 ;;
