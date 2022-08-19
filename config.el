@@ -1,9 +1,18 @@
+
 ;;---------------------------------------------------------------------------------------
 ;;
 ;; ಠ_ಠ
 ;;
 ;;---------------------------------------------------------------------------------------
 ;;
+;;
+
+(require 'use-package)
+
+
+;; my el
+(let ((my-file "gx.el"))
+  (load (format "%s/owenslake/gx-conf/gx-conf/%s" (getenv "HOME") my-file)))
 
 (setq inhibit-startup-message t)
 (setq use-dialog-box nil)
@@ -28,10 +37,6 @@
 (setq custom-file (locate-user-emacs-file "custom_vars.el"))
 (load custom-file 'noerror 'nomessage)
 
-;; my el
-(let ((my-file "gx.el"))
-  (load (format "%s/.emacs.d/%s" (getenv "HOME") my-file)))
-
 ;;
 (require 'package)
 ;; package places
@@ -49,9 +54,6 @@
 ;; initialize use-package on non linux platforms
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
-
-;;
-(require 'use-package)
 
 
 
@@ -561,3 +563,4 @@
 ;;
 
  
+
