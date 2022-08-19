@@ -1,4 +1,28 @@
 
+;; ----------------------------------------------------------------------------------
+;;
+;;
+;; ----------------------------------------------------------------------------------
+
+
+
+
+
+
+;;
+(defun gx/scroll-view-backward-line (&optional lines)
+  (interactive "P")
+  (view-scroll-lines lines t 1 t))
+
+;;
+(defun gx/scroll-view-forward-line (&optional lines)
+  (interactive "P") 
+  (view-scroll-lines lines nil 1 t))
+
+
+
+
+
 ;; 
 (defun gx/set-keyrate (lat rate)
   "set system kbd rate"

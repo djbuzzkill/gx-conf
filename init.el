@@ -3,54 +3,45 @@
 ;; ಠ_ಠ
 ;;
 ;;---------------------------------------------------------------------------------------
-
-
-
-
+;;
 
 (setq inhibit-startup-message t)
-
+(setq use-dialog-box nil)
+(setq visible-bell nil)
 ;;
 (global-font-lock-mode t)
 (show-paren-mode 1)
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-
-;; (tooltip-mode 1)
-
+(tooltip-mode 1)
 (toggle-truncate-lines 1)
-
 (transient-mark-mode 1)
-
+;;
 (recentf-mode 1)
-
 (save-place-mode 1)
-
-(setq use-dialog-box nil)
-
 (global-auto-revert-mode 1)
-
 (global-display-line-numbers-mode t)
-
 (set-fringe-mode 10)
 
-(setq visible-bell nil)
-
-(require 'package)
-
-;; quit putting customize shit in this filk
+;; quit putting customize shit in this file
 (setq custom-file (locate-user-emacs-file "custom_vars.el"))
 (load custom-file 'noerror 'nomessage)
 
+;; my el
+(let ((my-file "gx.el"))
+  (load (format "%s/.emacs.d/%s" (getenv "HOME") my-file)))
 
+;;
+(require 'package)
 ;; package places
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
 			 ("melpa-stable" . "https://stable.melpa.org/packages/")
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
-
+;;
 (package-initialize)
+
 ;;
 (unless package-archive-contents
   (package-refresh-contents))
@@ -59,51 +50,10 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-
+;;
 (require 'use-package)
 
-;; 
-(defun gx/set-keyrate (lat rate)
-  "set system kbd rate"
-  (interactive "nkey latency(ms): \nnkey rate(chars/sec): ")
-  (shell-command (format "xset r rate %d %d" lat rate)))
 
-;; 
-(defun gx/is-whitespace (c)
-  (or (char-equal c 9)
-      (char-equal c 10)
-      (char-equal c 11)
-      (char-equal c 12)
-      (char-equal c 13)
-      (char-equal c 32) ))
-
-
-;;
-(defun gx/kill-whitespace ()
-  (while (gx/is-whitespace (char-after))
-    (delete-char 1)))
-
-
-
-(defun gx/kill-word (args)
-  "die"
-  (interactive "p")
-
-  (if (gx/is-whitespace (char-after))
-      (gx/kill-whitespace) 
-    (kill-word args)))
-
-;;
-(defun gx/backward-kill-whitespace ()
-  (while (gx/is-whitespace (char-before))
-    (backward-delete-char 1)))
-	      	      
-(defun gx/backward-kill-word (arg)
-  "kill backward more like windows"
-  (interactive "p")
-  (if (gx/is-whitespace (char-before))
-      (gx/backward-kill-whitespace)
-    (backward-kill-word arg)))
 
 ;;	 
 (setq use-package-always-ensure t)
@@ -521,6 +471,12 @@
 
 
 ;;
+
+;;(use-package tabbar
+;;  :init (tabbar-mode 1))
+  
+
+;;
 ;(require 'slime)
 ;; (use-package slime
 ;;         (slime-setup)
@@ -567,23 +523,34 @@
 
 ;; fucking C-[
 
-(global-set-key (kbd "C-n")      'next-buffer)
-(global-set-key (kbd "C-p")      'previous-buffer)
+(global-set-key (kbd "C-n")    'previous-buffer)
+(global-set-key (kbd "C-p")    'next-buffer)
 
-(global-set-key (kbd "M-n")      'forward-line)
-(global-set-key (kbd "M-p")      'previous-line)
+(global-set-key (kbd "M-n")    'previous-line)
+(global-set-key (kbd "M-p")    'forward-line)
 
-(global-set-key (kbd "C->") 'next-window-any-frame)
-(global-set-key (kbd "C-<") 'previous-window-any-frame)
+(global-set-key (kbd "C->")    'previous-multiframe-window)
+(global-set-key (kbd "C-<")    'next-multiframe-window)
 
-(global-set-key (kbd "C-{") 'beginning-of-defun)
-(global-set-key (kbd "C-}") 'end-of-defun)
+(global-set-key (kbd "C-{")    'beginning-of-defun)
+(global-set-key (kbd "C-}")    'end-of-defun)
+(global-set-key (kbd "<menu>") nil)
 
+(global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
+(global-set-key (kbd "C-<down>") 'gx/scroll-view-forward-line)
+
+
+
+(global-set-key (kbd "<menu>") nil)
 
 
 (global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
 (global-unset-key (kbd "C-z"))     ;; 'previous-line);; swap with C-k
 
+
+
+
+(global-unset-key (kbd "C-<shift> <up>"))
 
 ;;
 ;;(find-file  "~/hello.org")
