@@ -4,15 +4,13 @@
 ;; ಠ_ಠ
 ;;
 ;;---------------------------------------------------------------------------------------
-;;
-;;
 
 (require 'use-package)
 
 
 ;; my el
-(let ((my-file "gx.el"))
-  (load (format "%s/owenslake/gx-conf/gx-conf/%s" (getenv "HOME") my-file)))
+(let ((my-funcs "gx.el"))
+  (load (format "%s/owenslake/gx-conf/%s" (getenv "HOME") my-funcs)))
 
 (setq inhibit-startup-message t)
 (setq use-dialog-box nil)
@@ -558,7 +556,7 @@
 ;;(find-file  "~/hello.org")
 
 (find-file  "~/hello.lisp")
-(find-file  "~/.emacs.d/init.el")
+(find-file  "~/owenslake/gx-conf/config.el")
 (find-file  "~/.config/awesome/rc.lua")
 ;;
 
