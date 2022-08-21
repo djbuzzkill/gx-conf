@@ -539,6 +539,8 @@
 (global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
 (global-set-key (kbd "C-<down>") 'gx/scroll-view-forward-line)
 
+(global-set-key (kbd "M-f")    'forward-to-word)
+(global-set-key (kbd "M-b")    'backward-to-word)
 
 
 (global-set-key (kbd "<menu>") nil)

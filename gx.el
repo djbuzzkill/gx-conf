@@ -22,7 +22,6 @@
 
 
 
-
 ;; 
 (defun gx/set-keyrate (lat rate)
   "set system kbd rate"
@@ -37,6 +36,7 @@
       (char-equal c 12)
       (char-equal c 13)
       (char-equal c 32) ))
+
 
 
 ;;
