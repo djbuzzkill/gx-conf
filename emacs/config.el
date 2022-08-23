@@ -141,7 +141,7 @@
 
 ;; 
 (use-package doom-themes
-  :init (load-theme 'doom-dark+ t))
+  :init (load-theme 'doom-moonlight t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -494,8 +494,10 @@
 (global-set-key (kbd "C-<tab>")  'other-window)
 
 (global-set-key (kbd "M-m")      'set-mark-command)
+
 (global-set-key (kbd "M-<up>")   'scroll-down-line)
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
+
 (global-set-key (kbd "C-o")      'find-file-existing) 
 (global-set-key (kbd "C-<tab>")   'next-multiframe-window)
 
