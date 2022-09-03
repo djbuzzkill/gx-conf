@@ -10,11 +10,12 @@
 
 ;; my el
 (let ((my-funcs "gx.el"))
-  (load (format "%s/owenslake/gx-conf/%s" (getenv "HOME") my-funcs)))
+  (load (format "%s/owenslake/gx-conf/emacs/%s" (getenv "HOME") my-funcs)))
 
 (setq inhibit-startup-message t)
 (setq use-dialog-box nil)
 (setq visible-bell nil)
+(setq truncate-lines nil)
 ;;
 (global-font-lock-mode t)
 (show-paren-mode 1)
@@ -22,7 +23,6 @@
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (tooltip-mode 1)
-(toggle-truncate-lines 1)
 (transient-mark-mode 1)
 ;;
 (recentf-mode 1)
@@ -125,7 +125,7 @@
 
 ;; remember to "install fonts"
 (use-package all-the-icons)
-
+                                                  
 
 
 ;;
@@ -141,7 +141,7 @@
 
 ;; 
 (use-package doom-themes
-  :init (load-theme 'doom-moonlight t))
+  :init (load-theme 'dead-of-night t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -521,6 +521,7 @@
 
 
 
+
 ;; die M-z
 
 ;; fucking C-[
@@ -530,6 +531,9 @@
 
 (global-set-key (kbd "M-n")    'previous-line)
 (global-set-key (kbd "M-p")    'forward-line)
+
+(global-set-key (kbd "C-q")    'save-buffers-kill-terminal)
+(global-set-key (kbd "M-q")    nil)
 
 (global-set-key (kbd "C->")    'previous-multiframe-window)
 (global-set-key (kbd "C-<")    'next-multiframe-window)
@@ -543,6 +547,7 @@
 
 (global-set-key (kbd "M-f")    'forward-to-word)
 (global-set-key (kbd "M-b")    'backward-to-word)
+
 
 
 (global-set-key (kbd "<menu>") nil)
@@ -560,7 +565,7 @@
 ;;(find-file  "~/hello.org")
 
 (find-file  "~/hello.lisp")
-(find-file  "~/owenslake/gx-conf/config.el")
+(find-file  "~/owenslake/gx-conf/emacs/config.el")
 (find-file  "~/.config/awesome/rc.lua")
 ;;
 

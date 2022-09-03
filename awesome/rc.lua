@@ -20,7 +20,7 @@ require("awful.hotkeys_popup.keys")
 
 
 -- 
-local wibar_width_pct = 0.86
+local wibar_width_pct = 0.98
 
 
 -- {{{ Error handling
@@ -51,8 +51,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 --beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
-
-beautiful.init ("~/.config/awesome/neodark/theme.lua")
+beautiful.init ("~/.config/awesome/themes/blue/theme.lua")
 
 
 
@@ -77,9 +76,10 @@ modk_ctrl = "Control"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 
-  awful.layout.suit.tile,
-  --  awful.layout.suit.spiral,
-  --awful.layout.suit.spiral.dwindle,
+   awful.layout.suit.floating,
+   awful.layout.suit.tile,
+--   awful.layout.suit.spiral,
+-- awful.layout.suit.spiral.dwindle,
 --  awful.layout.suit.max,
 --  awful.layout.suit.max.fullscreen,
 --  awful.layout.suit.magnifier,
@@ -270,11 +270,11 @@ end)
 
 --
 -- {{{ Mouse bindings
-root.buttons (gears.table.join (
---    awful.button({ }, 3, function () mymainmenu:toggle() end),
-    awful.button({ }, 4, awful.tag.viewnext),
-    awful.button({ }, 5, awful.tag.viewprev))
-)
+--root.buttons (gears.table.join (
+--     awful.button({ }, 3, function () mymainmenu:toggle() end),
+--     awful.button({ }, 4, awful.tag.viewnext),
+--     awful.button({ }, 5, awful.tag.viewprev))
+--  )
 
 -- }}}
 
@@ -316,16 +316,24 @@ globalkeys = gears.table.join (
     awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end, {description = "increase the number of columns", group = "layout"}),
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end, {description = "decrease the number of columns", group = "layout"}),
 
+
+    awful.key({ modkey,           }, "space", function () awful.layout.inc( 1) end,  {description = "select next", group = "layout"}),
+--    awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1) end,  {description = "select previous", group = "layout"}),
+
     -- MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS  
     -- MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS 
 
     awful.key({modk_ctrl, modk_alt}, "a", function () awful.spawn("alacritty")      end, {description = "Alacritty", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "e", function () awful.spawn("emacsclient -c") end, {description = "EMACS Client", group = "apps"}),
-    awful.key({modk_ctrl, modk_alt}, "f", function () awful.spawn("firefox")        end, {description = "Firefox", group = "apps"}),
+--    awful.key({modk_ctrl, modk_alt}, "f", function () awful.spawn("firefox")        end, {description = "Firefox", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "k", function () awful.spawn("kitty")          end, {description = "Kitty", group = "apps"}),
-    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("nautilus -w")    end, {description = "Nautilus", group = "apps"}),
-    awful.key({modk_ctrl, modk_alt}, "o", function () awful.spawn("opera")          end, {description = "Opera", group = "apps"}),
+--    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("nautilus -w")    end, {description = "Nautilus", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "v", function () awful.spawn("vivaldi-stable")  end, {description = "Vivladi", group = "apps"}),
 
+    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("thunar")  end, {description = "Thunar", group = "apps"}),
+
+    
+    
     awful.key({modk_win, "Control"}, "n", function () local c = awful.client.restore()  
                                                         if c then
                                                           c:emit_signal("request::activate", "key.unminimize", {raise = true})
@@ -489,12 +497,46 @@ awful.rules.rules = {
     -- add titlebars to normal clients and dialogs
     {
        rule_any   = { type = { "normal", "dialog" } },
-       except_any = { class = { "midori", "Navigator", "firefox" } }, 
+       except_any = { class_any = { "midori", "Navigator", "firefox" }, role = "browser" }, 
        properties = { titlebars_enabled = true }
     },
 
+    {
+       rule = {
+	  class_any = { "vivaldi", "vivaldi-snapshot", "vivaldi-stable" }
+       },
 
+       properties = {
+	  titlebars_enabled    = false, 
+       -- 	  size_hints_honor     = false, 
+       -- 	  maximized            = false,
+       -- 	  maximized_vertical   = false,
+       -- 	  maximized_horizontal = false,
+       -- 	  floating             = false,
+       -- 	  immobilized          = false, 
+
+       }, 
+
+    }, 
     
+    {
+       rule = {
+	  class_any = { "xnoise" }
+       },
+
+       properties = {
+	  titlebars_enabled    = false, 
+        	  size_hints_honor     = false, 
+       -- 	  maximized            = false,
+        	  maximized_vertical   = false,
+        	  maximized_horizontal = false,
+       	  floating             = false,
+        	  immobilized          = false, 
+
+       }, 
+
+       xnoise 
+    }, 
     -- Set Firefox to always map on the tag named "2" on screen 1.
     -- { rule = { class = "Firefox" },
     --   properties = { screen = 1, tag = "2" } },
@@ -577,7 +619,7 @@ client.connect_signal("unfocus", function(c) c.border_width = beautiful.border_w
 beautiful.useless_gap    = 5
 beautiful.border_width   = 1
 
-beautiful.border_focus   = "#ff88cc"
+beautiful.border_focus   = "#ff77aa"
 beautiful.border_normal  = "#102030"
 beautiful.border_marked  = "#101010"
 
@@ -594,6 +636,7 @@ awful.spawn.with_shell ("volumeicon")
 --awful.spawn.with_shell ("albert") 
 awful.spawn.with_shell ("xscreensaver --no-splash")
 awful.spawn.with_shell ("emacs --fg-daemon")
+awful.spawn.with_shell ("thunar --daemon")
 
 
 
