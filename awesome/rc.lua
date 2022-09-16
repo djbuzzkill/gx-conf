@@ -50,8 +50,10 @@ end
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
---beautiful.init(gears.filesystem.get_themes_dir() .. "gtk/theme.lua")
-beautiful.init ("~/.config/awesome/themes/blue/theme.lua")
+--beautiful.init(gears.filesystem.get_themes_dir() .. "blue/theme.lua")
+
+--beautiful.init ("~/.config/awesome/themes/blue/theme.lua")
+beautiful.init(gears.filesystem.get_themes_dir() .. "blue/theme.lua")
 
 
 
@@ -76,9 +78,9 @@ modk_ctrl = "Control"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
 
-   awful.layout.suit.floating,
    awful.layout.suit.tile,
---   awful.layout.suit.spiral,
+   awful.layout.suit.floating,
+-- awful.layout.suit.spiral,
 -- awful.layout.suit.spiral.dwindle,
 --  awful.layout.suit.max,
 --  awful.layout.suit.max.fullscreen,
@@ -228,7 +230,7 @@ awful.screen.connect_for_each_screen (function(s)
     {
        position = "top",
        screen   = s,
-       opacity  = 0.6,
+       opacity  = 0.7,
        width    = wibar_width_pct * s.geometry.width,
     }
     -- Add widgets to the wibox
@@ -260,7 +262,7 @@ awful.screen.connect_for_each_screen (function(s)
        },
     }
     
-    s.mywibox:geometry { y = 5 }
+    s.mywibox:geometry { y = 7 }
 
 end)
 
@@ -323,14 +325,17 @@ globalkeys = gears.table.join (
     -- MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS  
     -- MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS MY KEYS 
 
-    awful.key({modk_ctrl, modk_alt}, "a", function () awful.spawn("alacritty")      end, {description = "Alacritty", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "a", function () awful.spawn("alacritty")      end, {description = "Alacritty Terminal", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "b", function () awful.spawn("brave")      end, {description = "Brave Browswer", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "c", function () awful.spawn("chromium")      end, {description = "Chrome (Ungoogled)", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "e", function () awful.spawn("emacsclient -c") end, {description = "EMACS Client", group = "apps"}),
 --    awful.key({modk_ctrl, modk_alt}, "f", function () awful.spawn("firefox")        end, {description = "Firefox", group = "apps"}),
-    awful.key({modk_ctrl, modk_alt}, "k", function () awful.spawn("kitty")          end, {description = "Kitty", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "k", function () awful.spawn("kitty")          end, {description = "Kitty Terminal", group = "apps"}),
 --    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("nautilus -w")    end, {description = "Nautilus", group = "apps"}),
-    awful.key({modk_ctrl, modk_alt}, "v", function () awful.spawn("vivaldi-stable")  end, {description = "Vivladi", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "v", function () awful.spawn("vivaldi-stable")  end, {description = "Vivladi Browser", group = "apps"}),
 
-    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("thunar")  end, {description = "Thunar", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("thunar")  end, {description = "Thunar FM", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "y", function () awful.spawn("nyxt")  end, {description = "Nyxt Browser", group = "apps"}),
 
     
     
@@ -616,10 +621,10 @@ client.connect_signal("unfocus", function(c) c.border_width = beautiful.border_w
 
  
 -- 
-beautiful.useless_gap    = 5
+beautiful.useless_gap    = 8
 beautiful.border_width   = 1
 
-beautiful.border_focus   = "#ff77aa"
+beautiful.border_focus   = "#ff00ff"
 beautiful.border_normal  = "#102030"
 beautiful.border_marked  = "#101010"
 
@@ -633,8 +638,8 @@ beautiful.border_marked  = "#101010"
 awful.spawn.with_shell ("xset r rate 242 48")
 awful.spawn.with_shell ("picom --experimental-backends -b")
 awful.spawn.with_shell ("volumeicon")
---awful.spawn.with_shell ("albert") 
-awful.spawn.with_shell ("xscreensaver --no-splash")
+-- awful.spawn.with_shell ("albert") 
+-- awful.spawn.with_shell ("xscreensaver --no-splash")
 awful.spawn.with_shell ("emacs --fg-daemon")
 awful.spawn.with_shell ("thunar --daemon")
 

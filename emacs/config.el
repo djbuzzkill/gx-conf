@@ -8,6 +8,7 @@
 (require 'use-package)
 
 
+
 ;; my el
 (let ((my-funcs "gx.el"))
   (load (format "%s/owenslake/gx-conf/emacs/%s" (getenv "HOME") my-funcs)))
@@ -485,6 +486,7 @@
   :init (setq inferior-lisp-program "/usr/bin/sbcl")
   :config (setq lisp-mode-hook 'sly-editing-mode))  
 
+(setq c-mode-common-hook (lambda() (setq truncate-lines 1) (lsp)))
  
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
@@ -500,7 +502,6 @@
 
 (global-set-key (kbd "C-o")      'find-file-existing) 
 (global-set-key (kbd "C-<tab>")   'next-multiframe-window)
-
 
 
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) 
@@ -524,7 +525,14 @@
 
 ;; die M-z
 
-;; fucking C-[
+;; wtf C-[ 
+;;(global-set-key (kbd "C-[")    nil)
+;; (global-set-key (kbd "C-]")    nil)
+
+;;(global-set-key (kbd "C-,")   'previous-buffer)
+;; C-. has a problem 
+;;(glboal-set-key (kbd "C-.")   'next-buffer)
+
 
 (global-set-key (kbd "C-n")    'previous-buffer)
 (global-set-key (kbd "C-p")    'next-buffer)
@@ -556,18 +564,13 @@
 (global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
 (global-unset-key (kbd "C-z"))     ;; 'previous-line);; swap with C-k
 
-
-
-
 (global-unset-key (kbd "C-<shift> <up>"))
 
-;;
 ;;(find-file  "~/hello.org")
 
-(find-file  "~/hello.lisp")
-(find-file  "~/owenslake/gx-conf/emacs/config.el")
-(find-file  "~/.config/awesome/rc.lua")
+;; (find-file  "~/hello.lisp")
+;; (find-file  "~/owenslake/gx-conf/emacs/config.el")
+;; (find-file  "~/.config/awesome/rc.lua")
 ;;
-
- 
-
+;; (bookmark-load "~/.emacs.d/bookmarks")
+(bookmark-load "~/.emacs.d/gx.bookmarks")
