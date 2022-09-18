@@ -51,7 +51,18 @@
       (char-equal c 13)
       (char-equal c 32) ))
 
+(defun gx/is-char-num (c)
+  (and  (>=  c  ?0)  (<=  c  ?9)))
+      
 
+(defun gx/is-char-alpha (c)
+  (or (and (>=  c  ?a) (<= c ?z))
+      (and (>=  c  ?A) (<= c ?Z))))
+      
+
+(defun gx/is-char-alnum (c)
+  (or (gx/is-char-alpha c)
+      (gx/is-char-num c)))
 
 ;;
 (defun gx/kill-whitespace ()
@@ -68,14 +79,37 @@
       (gx/kill-whitespace) 
     (kill-word args)))
 
+
 ;;
 (defun gx/backward-kill-whitespace ()
   (while (gx/is-whitespace (char-before))
     (backward-delete-char 1)))
-	      	      
+
+;;
+;;
+;; (defun gx/backward-kill-word (arg)
+;;   "kill backward more like windows"
+;;   (interactive "p")
+;;   (if (gx/is-whitespace (char-before))
+;;     ;;  
+;;       (gx/backward-kill-whitespace)
+;;     ;;
+;;     (while (not (gx/is-whitespace (char-before)))
+;;       (backward-delete-char 1)) ))
+
+;;
+;; (defun gx/backward-kill-word (arg)
+;;   "kill backward more like windows"
+;;   (interactive "p")
+;;   (cond ((gx/is-whitespace (char-before)) (gx/backward-kill-whitespace))
+;; 	((gx/is-char-alnum  (char-before)) (while (gx/is-char-alnum (char-before)) (backward-delete-char 1)) )
+;; 	(t (backward-delete-char 1))) )
+
+
 (defun gx/backward-kill-word (arg)
   "kill backward more like windows"
   (interactive "p")
-  (if (gx/is-whitespace (char-before))
-      (gx/backward-kill-whitespace)
-    (backward-kill-word arg)))
+  (cond ((gx/is-whitespace (char-before)) (gx/backward-kill-whitespace))
+	((gx/is-char-alnum  (char-before))  (backward-kill-word arg))
+	(t (backward-delete-char 1))) )
+

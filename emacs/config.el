@@ -486,7 +486,8 @@
   :init (setq inferior-lisp-program "/usr/bin/sbcl")
   :config (setq lisp-mode-hook 'sly-editing-mode))  
 
-(setq c-mode-common-hook (lambda() (setq truncate-lines 1) (lsp)))
+(setq c-mode-common-hook
+      (lambda() (setq truncate-lines 1) (lsp)  (setq indent-tabs-mode  nil)))
  
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
