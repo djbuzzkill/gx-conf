@@ -329,7 +329,7 @@ globalkeys = gears.table.join (
     awful.key({modk_ctrl, modk_alt}, "b", function () awful.spawn("brave")      end, {description = "Brave Browswer", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "c", function () awful.spawn("chromium")      end, {description = "Chrome (Ungoogled)", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "e", function () awful.spawn("emacsclient -c") end, {description = "EMACS Client", group = "apps"}),
---    awful.key({modk_ctrl, modk_alt}, "f", function () awful.spawn("firefox")        end, {description = "Firefox", group = "apps"}),
+    awful.key({modk_ctrl, modk_alt}, "f", function () awful.spawn("firefox")        end, {description = "Firefox", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "k", function () awful.spawn("kitty")          end, {description = "Kitty Terminal", group = "apps"}),
 --    awful.key({modk_ctrl, modk_alt}, "n", function () awful.spawn("nautilus -w")    end, {description = "Nautilus", group = "apps"}),
     awful.key({modk_ctrl, modk_alt}, "v", function () awful.spawn("vivaldi-stable")  end, {description = "Vivladi Browser", group = "apps"}),
@@ -370,7 +370,7 @@ globalkeys = gears.table.join (
 clientkeys = gears.table.join (
    awful.key({ modk_win,         }, "Return", function (c) c.fullscreen = not c.fullscreen c:raise()  end, { description = "toggle fullscreen", group = "client"}),
    awful.key({ modk_win, "Shift" }, "Return", function (c) c:swap(awful.client.getmaster())      end, { description = "move to master", group = "client"}),
-   awful.key({ modk_win, "Shift" }, "c",      function (c) c:kill()                              end, { description = "close", group = "client"}),
+   awful.key({ modk_win, "Shift" }, "q",      function (c) c:kill()                              end, { description = "close", group = "client"}),
    awful.key({ modk_win,         }, "o",      function (c) c:move_to_screen()                    end, { description = "move to screen", group = "client"}),
 
    -- The client currently has the input focus, so it cannot be minimized, since minimized clients can't have the focus.
@@ -635,7 +635,7 @@ beautiful.border_marked  = "#101010"
 
 -- AUTO START
 
-awful.spawn.with_shell ("xset r rate 242 48")
+awful.spawn.with_shell ("xset r rate 242 22")
 awful.spawn.with_shell ("picom --experimental-backends -b")
 awful.spawn.with_shell ("volumeicon")
 -- awful.spawn.with_shell ("albert") 

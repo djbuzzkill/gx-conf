@@ -3,6 +3,18 @@
 ;;
 ;; ಠ_ಠ
 ;;
+;; ;; init.el:
+;; ;; quit putting customize shit in this file
+;; (setq custom-file (locate-user-emacs-file "custom_vars.el"))
+;; (load custom-file 'noerror 'nomessage)
+;;
+;;
+;; ;; 
+;; (let ((init-file "config.el"))
+;;   (load (format "%s/owenslake/gx-conf/emacs/%s" (getenv "HOME") init-file)))
+;;
+;; (put 'upcase-region 'disabled nil)
+;;
 ;;---------------------------------------------------------------------------------------
 
 (require 'use-package)
