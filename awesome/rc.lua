@@ -635,7 +635,7 @@ beautiful.border_marked  = "#101010"
 
 -- AUTO START
 
-awful.spawn.with_shell ("xset r rate 242 22")
+awful.spawn.with_shell ("xset r rate 242 26")
 awful.spawn.with_shell ("picom --experimental-backends -b")
 awful.spawn.with_shell ("volumeicon")
 -- awful.spawn.with_shell ("albert") 

@@ -17,9 +17,6 @@
 ;;
 ;;---------------------------------------------------------------------------------------
 
-(require 'use-package)
-
-
 
 ;; my el
 (let ((my-funcs "gx.el"))
@@ -44,6 +41,7 @@
 (global-display-line-numbers-mode t)
 (set-fringe-mode 10)
 
+
 ;; quit putting customize shit in this file
 (setq custom-file (locate-user-emacs-file "custom_vars.el"))
 (load custom-file 'noerror 'nomessage)
@@ -57,6 +55,11 @@
 			 ("elpa" . "https://elpa.gnu.org/packages/")))
 ;;
 (package-initialize)
+
+
+
+(require 'use-package)
+
 
 ;;
 (unless package-archive-contents
@@ -138,8 +141,6 @@
 
 ;; remember to "install fonts"
 (use-package all-the-icons)
-                                                  
-
 
 ;;
 (global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
@@ -154,7 +155,7 @@
 
 ;; 
 (use-package doom-themes
-  :init (load-theme 'dead-of-night t))
+  :init (load-theme 'doom-tokyo-night t))
 
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
@@ -305,43 +306,84 @@
   :custom (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 ;; Α α, Β β, Γ γ, Δ δ, Ε ε, Ζ ζ, Η η, Θ θ, Ι ι, Κ κ, Λ λ, Μ μ, Ν ν, Ξ ξ, Ο ο, Π π, Ρ ρ, Σ σ/ς, Τ τ, Υ υ, Φ φ, Χ χ, Ψ ψ, Ω ω.
 
+(use-package rustic
+  :ensure
+  :bind (:map rustic-mode-map
+              ("M-j" . lsp-ui-imenu)
+              ("M-?" . lsp-find-references)
+              ("C-c C-c l" . flycheck-list-errors)
+              ("C-c C-c a" . lsp-execute-code-action)
+              ("C-c C-c r" . lsp-rename)
+              ("C-c C-c q" . lsp-workspace-restart)
+              ("C-c C-c Q" . lsp-workspace-shutdown)
+              ("C-c C-c s" . lsp-rust-analyzer-status))
+  :config
+  ;; uncomment for less flashiness
+  ;; (setq lsp-eldoc-hook nil)
+  ;; (setq lsp-enable-symbol-highlighting nil)
+  ;; (setq lsp-signature-auto-activate nil)
+
+  ;; comment to disable rustfmt on save
+  (setq rustic-format-on-save t)
+  (add-hook 'rustic-mode-hook 'rk/rustic-mode-hook))
+
+(defun rk/rustic-mode-hook ()
+  ""
+  ;; so that run C-c C-c C-r works without having to confirm, but don't try to
+  ;; save rust buffers that are not file visiting. Once
+  ;; https://github.com/brotzeit/rustic/issues/253 has been resolved this should
+  ;; no longer be necessary.
+  (when buffer-file-name
+    (setq-local buffer-save-without-query t))
+  (add-hook 'before-save-hook 'lsp-format-buffer nil t))
 
 
+
+(use-package eglot
+  :init (eglot-ensure)
+  :config (add-to-list 'eglot-server-programs '((c++-mode c-mode) "clangd"))
+  (add-hook 'c-mode-hook 'eglot-ensure)
+  (add-hook 'c++-mode-hook 'eglot-ensure)
+  )
 
 
 (defun gx/lsp-mode-setup ()
+  ""
   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
   (lsp-headerline-breadcrumb-mode))
-
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :hook (lsp-mode . gx/lsp-mode-setup)
-
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  :custom
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-eldoc-render-all t)
+  (lsp-idle-delay 0.5)
+  
   :init (setq lsp-keymap-prefix "C-c l")
-  :config (lsp-enable-which-key-integration t))
+  :config
+  (lsp-enable-which-key-integration t)
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 
 ;; 
 (use-package lsp-ui
-  :hook (lsp-mode . lsp-ui)
-  :custom (lsp-ui-doc-position 'bottom))
-
-
+  :commands lsp-ui-mode
+  :custom
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-doc-enable nil))
 ;;
 (use-package lsp-treemacs
   :after lsp)
-
-
-
-
 
 ;;
 (use-package dap-mode)
 
 ;; https://github.com/emacs-lsp/dap-mode/issues/442
 (require 'dap-gdb-lldb)
-
 
 ;; ?? is this needed ??
 ;; (require 'dap-node)
@@ -357,8 +399,7 @@
 	("<tab>" . company-indent-or-complete-common))
   :custom
   (company-minimum-prefix-length 2)
-  (company-idle-delay 0.0))
-
+  (company-idle-delay 0.5))
 
 
 ;;(use-package company-box
@@ -479,7 +520,7 @@
 
 ;; 
 (use-package flycheck
-  :ensure t
+  :ensure 
   :init (global-flycheck-mode t))
 
 
@@ -494,13 +535,22 @@
 ;; (use-package slime
 ;;         (slime-setup)
 ;;   :config (slime-setup '(slime-fancy)))
-(use-package sly
-  :init (setq inferior-lisp-program "/usr/bin/sbcl")
-  :config (setq lisp-mode-hook 'sly-editing-mode))  
+;; (use-package sly
+;;   :init (setq inferior-lisp-program "/usr/bin/sbcl")
+;;   :config (setq lisp-mode-hook 'sly-editing-mode))  
 
 (setq c-mode-common-hook
-      (lambda() (setq truncate-lines 1) (lsp)  (setq indent-tabs-mode  nil)))
+      (lambda()
+	(setq truncate-lines 1)
+	(lsp)
+ 	(setq indent-tabs-mode nil)))
  
+;; (setq flycheck-cppcheck-include-path
+;;       '("/home/djbuzzkill/owenslake/gx/"
+;; 	"/home/djbuzzkill/owenslake/gx/ffm/"
+;; 	"/home/djbuzzkill/owenslake/gx/aframe/"
+;; 	"/home/djbuzzkill/owenslake/gx/bmx/"))
+
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
 
