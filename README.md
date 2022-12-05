@@ -1,1 +1,1 @@
-;; gx-conf
+-- just conf stuff

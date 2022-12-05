@@ -10,28 +10,28 @@
 
 
 ;;
-(defun gx/scroll-view-backward-line (&optional lines)
-  (interactive "P")
-  ;;(view-scroll-lines lines t 1 t)
-  (scroll-up-line)
-  )
+;; (defun gx/scroll-view-backward-line (&optional lines)
+;;   (interactive "P")
+;;   ;;(view-scroll-lines lines t 1 t)
+;;   (scroll-up-line))
+
+;;
+;; (defun gx/scroll-view-forward-line (&optional lines)
+;;   (interactive "P") 
+;;   (view-scroll-lines lines nil 1 t)
+;;   (scroll-down-line))
 
 ;;
 (defun gx/scroll-view-forward-line (&optional lines)
   (interactive "P") 
-  
-  (view-scroll-lines lines nil 1 t)
-  (scroll-down-line))
+  (view-scroll-lines lines nil 1 t))
+
 
 ;;
 (defun gx/scroll-view-backward-line (&optional lines)
   (interactive "P")
   (view-scroll-lines lines t 1 t))
 
-;;
-(defun gx/scroll-view-forward-line (&optional lines)
-  (interactive "P") 
-  (view-scroll-lines lines nil 1 t))
 
 
 

@@ -69,8 +69,6 @@
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
 
-
-
 ;;	 
 (setq use-package-always-ensure t)
 
@@ -371,10 +369,11 @@
 (use-package lsp-ui
   :commands lsp-ui-mode
   :custom
-  (lsp-ui-doc-position 'bottom)
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
+  ;;(lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-enable nil))
+
 ;;
 (use-package lsp-treemacs
   :after lsp)
@@ -522,43 +521,37 @@
 (use-package flycheck
   :ensure 
   :init (global-flycheck-mode t))
-
-
-;;
-
-;;(use-package tabbar
-;;  :init (tabbar-mode 1))
   
+;;
+(use-package flycheck-clang-analyzer
+  :ensure t
+  :after flycheck
+  :config
+  (setq flycheck-clang-analyzer-executable "clang -std=c++20")
+  (flycheck-clang-analyzer-setup))
 
 ;;
-;(require 'slime)
-;; (use-package slime
-;;         (slime-setup)
-;;   :config (slime-setup '(slime-fancy)))
-;; (use-package sly
-;;   :init (setq inferior-lisp-program "/usr/bin/sbcl")
-;;   :config (setq lisp-mode-hook 'sly-editing-mode))  
-
 (setq c-mode-common-hook
       (lambda()
 	(setq truncate-lines 1)
 	(lsp)
  	(setq indent-tabs-mode nil)))
- 
 ;; (setq flycheck-cppcheck-include-path
 ;;       '("/home/djbuzzkill/owenslake/gx/"
 ;; 	"/home/djbuzzkill/owenslake/gx/ffm/"
 ;; 	"/home/djbuzzkill/owenslake/gx/aframe/"
 ;; 	"/home/djbuzzkill/owenslake/gx/bmx/"))
+;; 
+;; type erase
+;; type 
 
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
 
 ;; 
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-(global-set-key (kbd "C-<tab>")  'other-window)
-
 (global-set-key (kbd "M-m")      'set-mark-command)
+(global-set-key (kbd "C-<tab>")  'other-window)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 (global-set-key (kbd "M-<up>")   'scroll-down-line)
 (global-set-key (kbd "M-<down>") 'scroll-up-line)
@@ -596,14 +589,13 @@
 ;; C-. has a problem 
 ;;(glboal-set-key (kbd "C-.")   'next-buffer)
 
-
 (global-set-key (kbd "C-n")    'previous-buffer)
 (global-set-key (kbd "C-p")    'next-buffer)
 
 (global-set-key (kbd "M-n")    'previous-line)
 (global-set-key (kbd "M-p")    'forward-line)
 
-(global-set-key (kbd "C-q")    'save-buffers-kill-terminal)
+(global-set-key (kbd "C-q")    'save-buffers-kill-terminalf)
 (global-set-key (kbd "M-q")    nil)
 
 (global-set-key (kbd "C->")    'previous-multiframe-window)
@@ -613,11 +605,15 @@
 (global-set-key (kbd "C-}")    'end-of-defun)
 (global-set-key (kbd "<menu>") nil)
 
+(global-set-key (kbd "M-f")    'forward-to-word)
+(global-set-key (kbd "M-b")    'backward-to-word)
+
 (global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
 (global-set-key (kbd "C-<down>") 'gx/scroll-view-forward-line)
 
-(global-set-key (kbd "M-f")    'forward-to-word)
-(global-set-key (kbd "M-b")    'backward-to-word)
+
+(global-set-key (kbd "C-<right>")    'forward-to-word)
+(global-set-key (kbd "C-<left>")    'backward-to-word)
 
 
 
