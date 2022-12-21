@@ -605,7 +605,9 @@
 (global-set-key (kbd "C-}")    'end-of-defun)
 (global-set-key (kbd "<menu>") nil)
 
-(global-set-key (kbd "M-f")    'forward-to-word)
+(global-set-key (kbd "M-f")   'gx/alt-forward)
+
+
 (global-set-key (kbd "M-b")    'backward-to-word)
 
 (global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
