@@ -548,16 +548,6 @@
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
 
-;; 
-(global-set-key (kbd "M-m")      'set-mark-command)
-(global-set-key (kbd "C-<tab>")  'other-window)
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-(global-set-key (kbd "M-<up>")   'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-
-(global-set-key (kbd "C-o")      'find-file-existing) 
-(global-set-key (kbd "C-<tab>")   'next-multiframe-window)
 
 
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) 
@@ -565,7 +555,6 @@
 
 
 (global-set-key (kbd "C-<backspace>") 'gx/backward-kill-word) 
-(global-set-key (kbd "M-d") 'gx/kill-word) 
 
 
 
@@ -589,42 +578,80 @@
 ;; C-. has a problem 
 ;;(glboal-set-key (kbd "C-.")   'next-buffer)
 
+
+;; (global-set-key (kbd "C-a")    nil) <-- beginning line
+(global-set-key (kbd "C-b")    nil)
+(global-set-key (kbd "C-c")    nil)
+(global-set-key (kbd "C-d")    nil)
+;; (global-set-key (kbd "C-e")   <-- end line
+;; (global-set-key (kbd "C-f")     <-- fwd char
+(global-set-key (kbd "C-i")    'previous-buffer)
+(global-set-key (kbd "C-j")    'next-logical-line)
+(global-set-key (kbd "C-k")    'previous-logical-line)
+;; (global-set-key (kbd "C-l")    <-- recenter-top-bottom
+(global-set-key (kbd "C-m")    nil)
 (global-set-key (kbd "C-n")    'previous-buffer)
+(global-set-key (kbd "C-o")    'find-file-existing) 
 (global-set-key (kbd "C-p")    'next-buffer)
-
-(global-set-key (kbd "M-n")    'previous-line)
-(global-set-key (kbd "M-p")    'forward-line)
-
-(global-set-key (kbd "C-q")    'save-buffers-kill-terminalf)
-(global-set-key (kbd "M-q")    nil)
+(global-set-key (kbd "C-q")    nil)
+;;(global-set-key (kbd "C-r")    <-- search backward
+;;(global-set-key (kbd "C-s")    <-- swiper
+(global-set-key (kbd "C-t")    nil)
+;; (global-set-key (kbd "C-u")    <--- ??? wtf is universal
+ (global-set-key (kbd "C-v")   nil)
+;; (global-set-key (kbd "C-w")   <-- kill region
+;; (global-set-key (kbd "C-y")   <-- yank
+(global-set-key (kbd "C-z")    nil)     ;; 'previous-line);; swap with C-k
 
 (global-set-key (kbd "C->")    'previous-multiframe-window)
 (global-set-key (kbd "C-<")    'next-multiframe-window)
+(global-set-key (kbd "C-<tab>")  'other-window)
 
-(global-set-key (kbd "C-{")    'beginning-of-defun)
-(global-set-key (kbd "C-}")    'end-of-defun)
-(global-set-key (kbd "<menu>") nil)
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
+
+(global-set-key (kbd "C-<tab>")   'next-multiframe-window)
+
+(global-set-key (kbd "C-{")       'beginning-of-defun)
+(global-set-key (kbd "C-}")       'end-of-defun)
+(global-set-key (kbd "C-<up>")    'gx/scroll-view-backward-line)    
+(global-set-key (kbd "C-<down>")  'gx/scroll-view-forward-line)
+(global-set-key (kbd "C-<right>")  'forward-to-word)
+(global-set-key (kbd "C-<left>")   backward-to-word)
+
+
+(global-set-key (kbd "M-a")    nil)
+(global-set-key (kbd "M-b")   'backward-to-word)
+(global-set-key (kbd "M-c")    nil)
+(global-set-key (kbd "M-d")    nil)
+(global-set-key (kbd "M-e")    nil)
 (global-set-key (kbd "M-f")   'gx/alt-forward)
+(global-set-key (kbd "M-h")   nil)
+(global-set-key (kbd "M-i")    nil)
+(global-set-key (kbd "M-j")    nil)
+(global-set-key (kbd "m-k")    nil)
+;; (global-set-key (kbd "m-l") <-- lower case
+(global-set-key (kbd "M-m")   nil)
+(global-set-key (kbd "M-n")   'previous-line)
+(global-set-key (kbd "M-o")   nil)
+(global-set-key (kbd "M-p")   'forward-line)
+(global-set-key (kbd "M-q")   nil)
+(global-set-key (kbd "M-r") rectangle-mark-mode )
+(global-set-key (kbd "M-t") nil)
+;;(global-set-key (kbd "M-u")  <-- uppercase 
+(global-set-key (kbd "M-v") nil)
+;; (global-set-key (kbd "M-x") nil) <-- kill-ring-save
+
+(global-set-key (kbd "M-v") nil)
+(global-set-key (kbd "M-z") nil)
 
 
-(global-set-key (kbd "M-b")    'backward-to-word)
-
-(global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
-(global-set-key (kbd "C-<down>") 'gx/scroll-view-forward-line)
-
-
-(global-set-key (kbd "C-<right>")    'forward-to-word)
-(global-set-key (kbd "C-<left>")    'backward-to-word)
-
-
+(global-set-key (kbd "M-<up>")   'scroll-down-line)
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
 
 (global-set-key (kbd "<menu>") nil)
-
 
 (global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
-(global-unset-key (kbd "C-z"))     ;; 'previous-line);; swap with C-k
-
 (global-unset-key (kbd "C-<shift> <up>"))
 
 ;;(find-file  "~/hello.org")
