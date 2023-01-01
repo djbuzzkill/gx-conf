@@ -567,7 +567,6 @@
 
 
 
-
 ;; die M-z
 
 ;; wtf C-[ 
@@ -629,7 +628,7 @@
 (global-set-key (kbd "M-h")   nil)
 (global-set-key (kbd "M-i")    nil)
 (global-set-key (kbd "M-j")    nil)
-(global-set-key (kbd "m-k")    nil)
+(global-set-key (kbd "M-k")    nil)
 ;; (global-set-key (kbd "m-l") <-- lower case
 (global-set-key (kbd "M-m")   nil)
 (global-set-key (kbd "M-n")   'previous-line)
