@@ -3,14 +3,12 @@
 ;;
 ;;
 ;; ----------------------------------------------------------------------------------
-
-
-
 (defun gx/alt-forward (&optional n)
   (interactive "P") 
   (if (thing-at-point 'word)
+      (forward-to-word 1)
       (forward-word)
-    (forward-to-word 1)))
+    ))
 
 ;;
 ;; (defun gx/scroll-view-backward-line (&optional lines)

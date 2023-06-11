@@ -1,5 +1,3 @@
-
-;;---------------------------------------------------------------------------------------
 ;;
 ;; ಠ_ಠ
 ;;
@@ -25,7 +23,7 @@
 (setq inhibit-startup-message t)
 (setq use-dialog-box nil)
 (setq visible-bell nil)
-(setq truncate-lines nil)
+(setq truncate-lines t)
 ;;
 (global-font-lock-mode t)
 (show-paren-mode 1)
@@ -140,8 +138,6 @@
 ;; remember to "install fonts"
 (use-package all-the-icons)
 
-;;
-(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
 
 ;; (define-key emacs-lisp-mode-map (kbd "C-d u") 'counsel-load-theme)
 
@@ -267,18 +263,20 @@
 
 
 ;; for keybinding stuff
-(use-package hydra)
+;; (use-package hydra)
 
-(defhydra hydra-text-scale (:timeout 4)
-  "scale text"
-  ("j" text-scale-increase "in")
-  ("k" text-scale-decrease "out")
-  ("f" nil "finished" :exit t))
-;; wah :w
+;; (defhydra hydra-text-scale (:timeout 4)
+;;   "scale text"
+;;   ("j" text-scale-increase "in")
+;;   ("k" text-scale-decrease "out")
+;;   ("f" nil "finished" :exit t))
+;; ;; wah :w
 
-(gx/leader-keys
- "ts" '(hydra-text-scale/body :which-key "scale-text"))
-  
+;; (gx/leader-keys
+;;  "ts" '(hydra-text-scale/body :which-key "scale-text"))
+
+
+
 (use-package forge)
 
 
@@ -292,17 +290,17 @@
 
 
 ;;
-(use-package org
-;; :hook (org-mode . 
-  :config (setq org-ellipsis " ▾"))
+;; (use-package org
+;; ;; :hook (org-mode . 
+;;   :config (setq org-ellipsis " ▾"))
 
 
 
-(use-package org-bullets
-  :after org
-  :hook (org-mode . org-bullets-mode)
-  :custom (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-;; Α α, Β β, Γ γ, Δ δ, Ε ε, Ζ ζ, Η η, Θ θ, Ι ι, Κ κ, Λ λ, Μ μ, Ν ν, Ξ ξ, Ο ο, Π π, Ρ ρ, Σ σ/ς, Τ τ, Υ υ, Φ φ, Χ χ, Ψ ψ, Ω ω.
+;; (use-package org-bullets
+;;   :after org
+;;   :hook (org-mode . org-bullets-mode)
+;;   :custom (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+;; ;; Α α, Β β, Γ γ, Δ δ, Ε ε, Ζ ζ, Η η, Θ θ, Ι ι, Κ κ, Λ λ, Μ μ, Ν ν, Ξ ξ, Ο ο, Π π, Ρ ρ, Σ σ/ς, Τ τ, Υ υ, Φ φ, Χ χ, Ψ ψ, Ω ω.
 
 (use-package rustic
   :ensure
@@ -334,7 +332,6 @@
   (when buffer-file-name
     (setq-local buffer-save-without-query t))
   (add-hook 'before-save-hook 'lsp-format-buffer nil t))
-
 
 
 (use-package eglot
@@ -408,21 +405,17 @@
 ;;
 (use-package lsp-ivy)
 
-
-
-
 ;; (add-to-list 'auto-mode-alist '("\\.h\\'" . cc-mode))
 
-;;
-(use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom (projectile-completion-system 'ivy)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (setq projectile-project-search-path '(("~/owenslake" . 2) ("~/saltonsea" . 2)))
-  (setq projectile-switch-project-action #'projectile-dired))
+;; (use-package projectile
+;;   :diminish projectile-mode
+;;   :config (projectile-mode)
+;;   :custom (projectile-completion-system 'ivy)
+;;   :bind-keymap
+;;   ("C-c p" . projectile-command-map)
+;;   :init
+;;   (setq projectile-project-search-path '(("~/owenslake" . 2) ("~/saltonsea" . 2)))
+;;   (setq projectile-switch-project-action #'projectile-dired))
 
 ;; 
 
@@ -469,11 +462,8 @@
   (define-key vterm-mode-map (kbd "C-p")   'previous-buffer))
 
 
-
 ;;
 (use-package eshell-git-prompt)
-
-
 
 (defun gx/configure-eshell ()
   (add-hook 'eshell-pre-command-hook 'eshell-truncate-buffer)
@@ -495,9 +485,6 @@
 (use-package eshell
   :hook (eshell-first-time-mode . 'gx/configure-eshell)
   :config (eshell-git-prompt-use-theme 'robbyrussell))
-
-
-
 
 ;;(use-package cc-mode
 ;;  :mode "\\.cpp\\'")
@@ -522,13 +509,17 @@
   :ensure 
   :init (global-flycheck-mode t))
   
-;;
 (use-package flycheck-clang-analyzer
   :ensure t
   :after flycheck
   :config
-  (setq flycheck-clang-analyzer-executable "clang -std=c++20")
-  (flycheck-clang-analyzer-setup))
+  (flycheck-clang-analyzer-setup)
+  (setq flycheck-clang-args "-std=c++20"))
+
+;; 
+
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++20")))
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++20")))
 
 ;;
 (setq c-mode-common-hook
@@ -536,6 +527,8 @@
 	(setq truncate-lines 1)
 	(lsp)
  	(setq indent-tabs-mode nil)))
+
+
 ;; (setq flycheck-cppcheck-include-path
 ;;       '("/home/djbuzzkill/owenslake/gx/"
 ;; 	"/home/djbuzzkill/owenslake/gx/ffm/"
@@ -548,24 +541,89 @@
 ;;
 (eval-after-load 'sly `(define-key sly-prefix-map (kbd "M-h") 'sly-documentation-lookup))
 
+;; 
+(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
 
+;;
+(global-set-key (kbd "C-M-j") 'counsel-switch-buffer)
+;; SET CTRL
+;;(global-set-key (kbd "C-b")    nil)
+(global-set-key (kbd "C-c")    nil)
+(global-set-key (kbd "C-d")    nil)
+
+(global-set-key (kbd "C-j")    'next-logical-line)
+(global-set-key (kbd "C-k")    'previous-logical-line)
+
+;(global-set-key (kbd "C-m")    nil) <-this disables <RETURN>
+(global-set-key (kbd "C-n")    'previous-buffer)
+(global-set-key (kbd "C-o")    'find-file-existing) 
+(global-set-key (kbd "C-p")    'next-buffer)
+(global-set-key (kbd "C-q")    nil)
+(global-set-key (kbd "C-t")    nil)
+(global-set-key (kbd "C-z")    nil)     ;; 'previous-line);; swap with C-k
+
+(global-set-key (kbd "C->")    'previous-multiframe-window)
+(global-set-key (kbd "C-<")    'next-multiframe-window)
+
+(global-set-key (kbd "C-{")    'beginning-of-defun)
+(global-set-key (kbd "C-}")    'end-of-defun)
+
+
+;; combos
 (global-set-key (kbd "C-x C-r") 'recentf-open-files) 
 (global-set-key (kbd "C-x C-m") 'recentf-open-more-files) 
+(global-set-key (kbd "C-x C-z") nil) 
 
 
+(global-set-key (kbd "C-<tab>")  'other-window)
 (global-set-key (kbd "C-<backspace>") 'gx/backward-kill-word) 
 
+(global-set-key (kbd "C-<up>")   'gx/scroll-view-backward-line)    
+(global-set-key (kbd "C-<down>") 'gx/scroll-view-forward-line)
+(global-set-key (kbd "C-<right>") 'forward-to-word)
+(global-set-key (kbd "C-<left>")  'backward-to-word)
+(global-set-key (kbd "C-\\")  nil)
 
 
-(global-set-key (kbd "C-j") 'forward-line)      ;; was electric-newline..'mebe indent'
-(global-set-key (kbd "C-k") 'previous-line)      ;; was kill-line
+;; SET ALT
+(global-set-key (kbd "M-a")    nil)
+(global-set-key (kbd "M-b") 'backward-to-word)
+(global-set-key (kbd "M-c")    nil)
+(global-set-key (kbd "M-d") 'gx/kill-word) 
+(global-set-key (kbd "M-e")    nil)
+
+(global-set-key (kbd "M-f") 'gx/alt-forward)
+
+(global-set-key (kbd "M-h")   nil)
+(global-set-key (kbd "M-i")    nil)
+(global-set-key (kbd "M-j")    nil)
+(global-set-key (kbd "M-k")    nil)
+;; (global-set-key (kbd "m-l") <-- lower case
+
+(global-set-key (kbd "M-m")   nil)
+(global-set-key (kbd "M-n")   'previous-line)
+(global-set-key (kbd "M-o")   nil)
+(global-set-key (kbd "M-p")   'forward-line)
+(global-set-key (kbd "M-q")   nil)
+
+(global-set-key (kbd "M-r")   'rectangle-mark-mode )
+(global-set-key (kbd "M-t")   nil)
+
+;;(global-set-key (kbd "M-u")  <-- uppercase 
+(global-set-key (kbd "M-v") nil)
+;; (global-set-key (kbd "M-x") nil) <-- kill-ring-save
+
+(global-set-key (kbd "M-z") nil)
+
+(global-set-key (kbd "M-<up>")   'scroll-down-line)
+(global-set-key (kbd "M-<down>") 'scroll-up-line)
 
 ;;(global-set-key (kbd "C-j") 'forward-line) ;; was electric-newline..'mebe indent'
-(global-set-key (kbd "M-k") 'kill-line)      ;; was kill-line
 
-
-
+;; (flymake-mode nil)
+ (defvar flymake-start-on-flymake-mode nil)
+;; (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
 
 ;; die M-z
 
@@ -577,81 +635,7 @@
 ;; C-. has a problem 
 ;;(glboal-set-key (kbd "C-.")   'next-buffer)
 
-
-;; (global-set-key (kbd "C-a")    nil) <-- beginning line
-(global-set-key (kbd "C-b")    nil)
-(global-set-key (kbd "C-c")    nil)
-(global-set-key (kbd "C-d")    nil)
-;; (global-set-key (kbd "C-e")   <-- end line
-;; (global-set-key (kbd "C-f")     <-- fwd char
-(global-set-key (kbd "C-i")    'previous-buffer)
-(global-set-key (kbd "C-j")    'next-logical-line)
-(global-set-key (kbd "C-k")    'previous-logical-line)
-;; (global-set-key (kbd "C-l")    <-- recenter-top-bottom
-(global-set-key (kbd "C-m")    nil)
-(global-set-key (kbd "C-n")    'previous-buffer)
-(global-set-key (kbd "C-o")    'find-file-existing) 
-(global-set-key (kbd "C-p")    'next-buffer)
-(global-set-key (kbd "C-q")    nil)
-;;(global-set-key (kbd "C-r")    <-- search backward
-;;(global-set-key (kbd "C-s")    <-- swiper
-(global-set-key (kbd "C-t")    nil)
-;; (global-set-key (kbd "C-u")    <--- ??? wtf is universal
- (global-set-key (kbd "C-v")   nil)
-;; (global-set-key (kbd "C-w")   <-- kill region
-;; (global-set-key (kbd "C-y")   <-- yank
-(global-set-key (kbd "C-z")    nil)     ;; 'previous-line);; swap with C-k
-
-(global-set-key (kbd "C->")    'previous-multiframe-window)
-(global-set-key (kbd "C-<")    'next-multiframe-window)
-(global-set-key (kbd "C-<tab>")  'other-window)
-
-(global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
-
-(global-set-key (kbd "C-<tab>")   'next-multiframe-window)
-
-(global-set-key (kbd "C-{")       'beginning-of-defun)
-(global-set-key (kbd "C-}")       'end-of-defun)
-(global-set-key (kbd "C-<up>")    'gx/scroll-view-backward-line)    
-(global-set-key (kbd "C-<down>")  'gx/scroll-view-forward-line)
-(global-set-key (kbd "C-<right>")  'forward-to-word)
-(global-set-key (kbd "C-<left>")   backward-to-word)
-
-
-(global-set-key (kbd "M-a")    nil)
-(global-set-key (kbd "M-b")   'backward-to-word)
-(global-set-key (kbd "M-c")    nil)
-(global-set-key (kbd "M-d")    'kill-word)
-(global-set-key (kbd "M-e")    nil)
-(global-set-key (kbd "M-f")   'gx/alt-forward)
-(global-set-key (kbd "M-h")   nil)
-(global-set-key (kbd "M-i")    nil)
-(global-set-key (kbd "M-j")    nil)
-(global-set-key (kbd "M-k")    nil)
-;; (global-set-key (kbd "m-l") <-- lower case
-(global-set-key (kbd "M-m")   nil)
-(global-set-key (kbd "M-n")   'previous-line)
-(global-set-key (kbd "M-o")   nil)
-(global-set-key (kbd "M-p")   'forward-line)
-(global-set-key (kbd "M-q")   nil)
-(global-set-key (kbd "M-r") rectangle-mark-mode )
-(global-set-key (kbd "M-t") nil)
-;;(global-set-key (kbd "M-u")  <-- uppercase 
-(global-set-key (kbd "M-v") nil)
-;; (global-set-key (kbd "M-x") nil) <-- kill-ring-save
-
-(global-set-key (kbd "M-v") nil)
-(global-set-key (kbd "M-z") nil)
-
-
-(global-set-key (kbd "M-<up>")   'scroll-down-line)
-(global-set-key (kbd "M-<down>") 'scroll-up-line)
-
 (global-set-key (kbd "<menu>") nil)
-
-(global-unset-key (kbd "C-x C-z")) ;; 'forward-line) ;; swap with C-j
-(global-unset-key (kbd "C-<shift> <up>"))
 
 ;;(find-file  "~/hello.org")
 
@@ -661,3 +645,11 @@
 ;;
 ;; (bookmark-load "~/.emacs.d/bookmarks")
 (bookmark-load "~/.emacs.d/gx.bookmarks")
+
+
+Stealth 151
+Kahlua,
+rum 151,
+Amaretto
+Grand Marinier
+Bailey's
